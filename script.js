@@ -9,11 +9,24 @@ function eventWindowLoaded() {
     preload = true;
 }
 
+function compareNumbers(a, b) {
+    return a - b;
+}
+
+function checkAndAppend(array, value) {
+    if (!array.includes(value)) {
+        array.push(value);
+        array.sort(compareNumbers);
+    }
+}
+
 // CALLBACK FUNCTIONS START (REQUIRED)
 var car;
 var maxRpm = 0;
 var rpmDisp = 0;
 var pace = new Array;
+var tcsValues = new Array;
+var absValues = new Array;
 
 // function is called for JSON-Response with JSONType 1, 2 and 3
 function updateType1(json) {
@@ -46,8 +59,10 @@ function updateType1(json) {
         }
         document.querySelector("div#turbo p").textContent = json.Turbo.toFixed(3);
         document.querySelector("div#rpm p").textContent = json.RPM;
-        document.querySelector("div#tcs p").textContent = (json.TC * 100).toFixed(0) + "%";
-        document.querySelector("div#abs p").textContent = (json.ABS * 100).toFixed(0) + "%";
+        checkAndAppend(tcsValues, json.TC);
+        document.querySelector("div#tcs p").textContent = tcsValues.indexOf(json.TC);
+        checkAndAppend(absValues, json.ABS);
+        document.querySelector("div#abs p").textContent = absValues.indexOf(json.ABS);
         document.querySelector("div#kers p").textContent = (json.KERSAmount * 100).toFixed(0) + "%";
 
         document.getElementById("digital_bar").style.width = ((json.RPM / (Math.ceil(rpmDisp) * 1000)) * 100) + "%";
@@ -110,6 +125,8 @@ function updateType3(json) {
         maxRpm = 0;
         rpmDisp = 0;
         pace = new Array;
+        tcsValues = new Array;
+        absValues = new Array;
     }
     
     // USER CODE END
