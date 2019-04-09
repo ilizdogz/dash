@@ -109,6 +109,26 @@ body {
     grid-row: 4;
 }
 
+#tire-prs {
+    grid-column: 1;
+    grid-row: 5;
+}
+
+#tire-temp {
+    grid-column: 2;
+    grid-row: 5;
+}
+
+#tire-wear {
+    grid-column: 3;
+    grid-row: 5;
+}
+
+#pace {
+    grid-column: 4 / 6;
+    grid-row: 5;
+}
+
 .item-text {
     position: absolute;
     font-size: 2.5em;
@@ -153,4 +173,9 @@ body {
     position: absolute;
     left: 5px;
     bottom: -15px;
+}
+
+.tire-text {
+    font-size: 1em !important;
+    white-space: pre;
 }

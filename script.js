@@ -6,30 +6,14 @@ var shiftindicator = 0.985;
 window.addEventListener("load", eventWindowLoaded, false);
 
 function eventWindowLoaded() {
-    preloadBar();
     preload = true;
-}
-
-function preloadBar() {
-    var barArray = new Array();
-
-    for (var barnum = 0; barnum < 11; barnum++) {
-        barArray[barnum] = new Image(711, 73);
-        barArray[barnum].src = "rpm_bar_" + (barnum) + ".png";
-    }
-
-    var rpm_images = "";
-    for (i = 0; i < barArray.length; i++) {
-        rpm_images += "<image id=\"rpm_image_" + (i) + "\" class=\"hidden\" src=\"" + barArray[i].src + "\" />";
-    }
-
-    document.getElementById("rpm_bar").innerHTML = rpm_images;
 }
 
 // CALLBACK FUNCTIONS START (REQUIRED)
 var car;
 var maxRpm = 0;
 var rpmDisp = 0;
+var pace = new Array;
 
 // function is called for JSON-Response with JSONType 1, 2 and 3
 function updateType1(json) {
@@ -43,7 +27,7 @@ function updateType1(json) {
         if (json.RPM > maxRpm) {
             maxRpm = json.RPM;
         }
-        console.log(json);
+        // console.log(json);
         var rpm_per = json.RPM / maxRpm;
         if (json.RPM / 1000 > rpmDisp) {
             rpmDisp = (json.RPM / 1000);
@@ -68,42 +52,6 @@ function updateType1(json) {
 
         document.getElementById("digital_bar").style.width = ((json.RPM / (Math.ceil(rpmDisp) * 1000)) * 100) + "%";
 
-        for (i = 0; i < 11; i++) document.getElementById("rpm_image_" + i).className = "hidden";
-
-        if (rpm_per > 0.0 && rpm_per < 0.15) {
-            document.getElementById("rpm_image_1").className = "visible";
-        }
-        else if (rpm_per >= 0.15 && rpm_per < 0.3) {
-            document.getElementById("rpm_image_2").className = "visible";
-        }
-        else if (rpm_per >= 0.3 && rpm_per < 0.45) {
-            document.getElementById("rpm_image_3").className = "visible";
-        }
-        else if (rpm_per >= 0.45 && rpm_per < 0.6) {
-            document.getElementById("rpm_image_4").className = "visible";
-        }
-        else if (rpm_per >= 0.6 && rpm_per < 0.7) {
-            document.getElementById("rpm_image_5").className = "visible";
-        }
-        else if (rpm_per >= 0.7 && rpm_per < 0.75) {
-            document.getElementById("rpm_image_6").className = "visible";
-        }
-        else if (rpm_per >= 0.75 && rpm_per < 0.85) {
-            document.getElementById("rpm_image_7").className = "visible";
-        }
-        else if (rpm_per >= 0.85 && rpm_per < 0.9) {
-            document.getElementById("rpm_image_8").className = "visible";
-        }
-        else if (rpm_per >= 0.9 && rpm_per < 0.95) {
-            document.getElementById("rpm_image_9").className = "visible";
-        }
-        else if (rpm_per >= 0.95) {
-            document.getElementById("rpm_image_10").className = "visible";
-        }
-        else {
-            document.getElementById("rpm_image_0").className = "visible";
-        }
-
         if (shiftindicator <= rpm_per) {
             document.querySelector("#gear").className = "grid-item gear_shift_active";
             document.querySelector("#rpm").className = "grid-item gear_shift_active";
@@ -111,7 +59,11 @@ function updateType1(json) {
         } else {
             document.querySelector("#gear").className = "grid-item";
             document.querySelector("#digital_bar").className = "bg-normal";
-            document.querySelector("#rpm").className = "grid-item";
+            if (rpm_per >= 80) {
+                document.querySelectory("#rpm").className = "grid-item yellow";
+            } else {
+                document.querySelector("#rpm").className = "grid-item";
+            }
         }
     }
 
@@ -127,6 +79,23 @@ function updateType2(json) {
     document.querySelector("div#prev p").textContent = SecondsToTimeString(Last);
     document.querySelector("div#best p").textContent = SecondsToTimeString(Best);
     document.querySelector("div#fuel p").textContent = json.Fuel.toFixed(2);
+    document.querySelector("div#tire-prs p").textContent = json.TyrePress[0].FL + " " + json.TyrePress[0].FR + "\r\n" + json.TyrePress[0].RL + " " + json.TyrePress[0].RR;
+    document.querySelector("div#tire-temp p").textContent = json.TyreTemp[0].middle + " " + json.TyreTemp[1].middle + "\r\n" + json.TyreTemp[2].middle + " " + json.TyreTemp[3].middle;
+    document.querySelector("div#tire-wear p").textContent = json.TyreWear[0].FL.toFixed(0) + "% " + json.TyreWear[0].FR.toFixed(0) + "%\r\n" + json.TyreWear[0].RL.toFixed(0) + "% " + json.TyreWear[0].RR.toFixed(0) + "%";
+    if (!pace.includes(json.Last) && json.Last != 0) {
+        if (pace.length < 4) {
+            pace.push(json.Last);
+        } else {
+            pace.shift();
+            pace.push(json.Last)
+        }
+        var avg = 0;
+        for (var i = 0; i < pace.length; i++) {
+            avg += pace[i];
+        }
+        avg /= pace.length;
+        document.querySelector("div#pace p").textContent = SecondsToTimeString(avg);
+    }
     // USER CODE END	
 }
 
@@ -140,6 +109,7 @@ function updateType3(json) {
         car = json.Car;
         maxRpm = 0;
         rpmDisp = 0;
+        pace = new Array;
     }
     
     // USER CODE END
