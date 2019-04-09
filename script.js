@@ -47,7 +47,7 @@ function updateType1(json) {
         document.querySelector("div#speed p").textContent = json.Speed;
         document.querySelector("div#gear p").textContent = gear;
         document.querySelector("div#current p").textContent = SecondsToTimeString(json.Current);
-        document.queryCommandEnabled("div#diff p").textContent = SecondsToGapTimeString(json.DeltaBest);
+        document.querySelector("div#diff p").textContent = SecondsToGapTimeString(json.DeltaBest);
         if (json.DeltaBest > 0) {
             document.querySelector("div#diff p").style.color = "red";
         } else if (json.DeltaBest < 0) {
@@ -55,7 +55,7 @@ function updateType1(json) {
         } else {
             document.querySelector("div#diff p").style.color = "white";
         }
-        document.querySelector("div#turbo p").textContent = json.Turbo + " bar";
+        document.querySelector("div#turbo p").textContent = json.Turbo.toFixed(3);
         document.querySelector("div#rpm p").textContent = json.RPM;
         document.querySelector("div#tcs p").textContent = json.TC * 100 - 7;
         document.querySelector("div#abs p").textContent = json.ABS * 100 - 7;
@@ -105,8 +105,13 @@ function updateType1(json) {
 
         if (shiftindicator <= rpm_per) {
             document.querySelector("#gear").className = "grid-item gear_shift_active";
-        } 
-        else document.querySelector("#gear").className = "grid-item";
+            document.querySelector("#rpm").className = "grid-item gear_shift_active";
+            document.querySelector("#digital_bar").className = "gear_shift_active";
+        } else {
+            document.querySelector("#gear").className = "grid-item";
+            document.querySelector("#digital_bar").className = "bg-white";
+            document.querySelector("#rpm").className = "grid-item";
+        }
     }
 
     // USER CODE END
@@ -120,7 +125,7 @@ function updateType2(json) {
     document.querySelector("div#lap p").textContent = Laps;
     document.querySelector("div#prev p").textContent = SecondsToTimeString(Last);
     document.querySelector("div#best p").textContent = SecondsToTimeString(Best);
-    document.querySelector("div#fuel p").textContent = json.Fuel;
+    document.querySelector("div#fuel p").textContent = json.Fuel.toFixed(2);
     // USER CODE END	
 }
 
@@ -130,7 +135,15 @@ function updateType3(json) {
     //if(!preload) preloadBar();
     //document.getElementById("speed_label").innerHTML = Speedunit == 0 ? 'KPH' : 'MPH';
     shiftindicator = ShiftIndicator / 100;
-    document.querySelector("div#pos p").textContent = json.Pos + "/" + json.Cars;
+    // while (document.querySelector("div#digital_rpm_bar").firstChild) {
+    //     document.querySelector("div#digtal_rpm_bar").removeChild();
+    // }
+    // var rpm_disp = maxRpm.toFixed(0) + 1;
+    // for (var i = 0; i <= rpm_disp; i++) {
+    //     var bar = document.createElement("div.gridsquare.rpm-disp");
+    //     document.querySelector("div#digital_rpm_bar").appendChild(bar);
+    // }
+    // document.querySelector("div#digital_rpm_bar").innerHTML = dispHtml;
     // USER CODE END
 }
 

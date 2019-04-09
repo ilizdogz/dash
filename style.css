@@ -23,8 +23,13 @@ body {
 }
 
 #digital_bar {
-    background: white;
+    position: relative;
     height: 100%;
+    top: -80px;
+}
+
+.bg-white {
+    background: white;
 }
 
 .grid-container {
@@ -130,4 +135,8 @@ body {
 
 .hidden {
     display: none;
+}
+
+.rpm-disp {
+    border-left: 1px solid white;
 }
