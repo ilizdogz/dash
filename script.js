@@ -27,8 +27,9 @@ function preloadBar() {
 }
 
 // CALLBACK FUNCTIONS START (REQUIRED)
-
+var car;
 var maxRpm = 0;
+var rpmDisp = 0;
 
 // function is called for JSON-Response with JSONType 1, 2 and 3
 function updateType1(json) {
@@ -44,6 +45,10 @@ function updateType1(json) {
         }
         console.log(json);
         var rpm_per = json.RPM / maxRpm;
+        if (json.RPM / 1000 > rpmDisp) {
+            rpmDisp = (json.RPM / 1000);
+            updateRpmBar();
+        }
         document.querySelector("div#speed p").textContent = json.Speed;
         document.querySelector("div#gear p").textContent = gear;
         document.querySelector("div#current p").textContent = SecondsToTimeString(json.Current);
@@ -57,15 +62,11 @@ function updateType1(json) {
         }
         document.querySelector("div#turbo p").textContent = json.Turbo.toFixed(3);
         document.querySelector("div#rpm p").textContent = json.RPM;
-        document.querySelector("div#tcs p").textContent = json.TC * 100 - 7;
-        document.querySelector("div#abs p").textContent = json.ABS * 100 - 7;
-        if (json.KERS != 0) {
-            document.querySelector("div#kers p").textContent = (json.KERSCurrent / json.KERSAmount) * 100 + "%";
-        } else {
-            document.querySelector("div#kers p").textContent = 0;
-        }
+        document.querySelector("div#tcs p").textContent = (json.TC * 100).toFixed(0) + "%";
+        document.querySelector("div#abs p").textContent = (json.ABS * 100).toFixed(0) + "%";
+        document.querySelector("div#kers p").textContent = (json.KERSAmount * 100).toFixed(0) + "%";
 
-        document.getElementById("digital_bar").style.width = (rpm_per * 100) + "%";
+        document.getElementById("digital_bar").style.width = ((json.RPM / (Math.ceil(rpmDisp) * 1000)) * 100) + "%";
 
         for (i = 0; i < 11; i++) document.getElementById("rpm_image_" + i).className = "hidden";
 
@@ -109,7 +110,7 @@ function updateType1(json) {
             document.querySelector("#digital_bar").className = "gear_shift_active";
         } else {
             document.querySelector("#gear").className = "grid-item";
-            document.querySelector("#digital_bar").className = "bg-white";
+            document.querySelector("#digital_bar").className = "bg-normal";
             document.querySelector("#rpm").className = "grid-item";
         }
     }
@@ -135,16 +136,30 @@ function updateType3(json) {
     //if(!preload) preloadBar();
     //document.getElementById("speed_label").innerHTML = Speedunit == 0 ? 'KPH' : 'MPH';
     shiftindicator = ShiftIndicator / 100;
-    // while (document.querySelector("div#digital_rpm_bar").firstChild) {
-    //     document.querySelector("div#digtal_rpm_bar").removeChild();
-    // }
-    // var rpm_disp = maxRpm.toFixed(0) + 1;
-    // for (var i = 0; i <= rpm_disp; i++) {
-    //     var bar = document.createElement("div.gridsquare.rpm-disp");
-    //     document.querySelector("div#digital_rpm_bar").appendChild(bar);
-    // }
-    // document.querySelector("div#digital_rpm_bar").innerHTML = dispHtml;
+    if (json.Car != car) {
+        car = json.Car;
+        maxRpm = 0;
+        rpmDisp = 0;
+    }
+    
     // USER CODE END
+}
+
+updateRpmBar = () => {
+    var node = document.querySelector("div#digital_rpm_bar");
+    var dupNode = document.querySelector("div#digital_rpm_bar").cloneNode(false);
+    if (node) {
+        node.parentNode.replaceChild(dupNode,node);
+    }
+    for (var i = 0; i < rpmDisp; i++) {
+        var bar = document.createElement("div");
+        bar.className = "rpm-disp"
+        var p = document.createElement("p");
+        p.className = "rpm-num";
+        p.textContent = i;
+        bar.appendChild(p);
+        dupNode.appendChild(bar);
+    }
 }
 
 // CALLBACK FUNCTIONS END

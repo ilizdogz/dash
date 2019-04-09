@@ -9,7 +9,7 @@ body {
 
 #rpm_bar {
     margin: 10 auto;
-    width: 80%;
+    width: 100%;
 }
 
 #bar {
@@ -28,8 +28,8 @@ body {
     top: -80px;
 }
 
-.bg-white {
-    background: white;
+.bg-normal {
+    background: rgba(0, 58, 219, 0.425);
 }
 
 .grid-container {
@@ -139,4 +139,18 @@ body {
 
 .rpm-disp {
     border-left: 1px solid white;
+    height: 100%;
+    position: relative;
+}
+
+.bar-container {
+    display: grid;
+    justify-items: stretch;
+    grid-auto-flow: column;
+}
+
+.rpm-num {
+    position: absolute;
+    left: 5px;
+    bottom: -15px;
 }
