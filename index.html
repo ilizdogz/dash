@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>Bosch DDU 8</title>
+    <link rel="apple-touch-icon" href="./../apple-touch-icon-precomposed.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="./../web/apple-touch-icon-72x72-precomposed.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="./../web/apple-touch-icon-114x114-precomposed.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="./../web/apple-touch-icon-144x144-precomposed.png" />
+    <link rel="icon" href="./../web/favicon.png" type="image/png">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script type="text/javascript" src="./../ajax.js"></script>
+    <script type="text/javascript" src="./../utils.js"></script>
+    <script type="text/javascript" src="script.js"></script>
+</head>
+
+<body>
+    <div id="back" onclick="window.location='./../web/index.html';"></div>
+
+    <!-- USER CODE Start -->
+
+    <div id="dashboard">
+        <div id="rpm_bar"><img id="rpm-img" src="./rpm_bar_0.png" /></div>
+        <div id="bar">
+            <div id="digital_rpm_bar">
+                <div id="digital_bar" class="basebgcolor"></div>
+            </div>
+        </div>
+        <div id="display">
+            <div id="mode1" class="visible grid-container">
+                
+                <div id="speed" class="grid-item">
+                    <div class="item-desc">speed</div>
+                    <p class="item-text">0</p>
+                </div>
+                <div id="rpm" class="grid-item">
+                    <div class="item-desc">rpm</div>
+                    <p class="item-text">0</p>
+                </div>
+                <div id="gear" class="grid-item">
+                    <div class="item-desc">gear</div>
+                    <p id="gear-text">N</p>
+                </div>
+                <div id="current" class="grid-item">
+                    <div class="item-desc">current</div>
+                    <p class="item-text">0:00.000 <span class="currentDiff">0:00.000</span></p>
+                </div>
+                <div id="lap" class="grid-item">
+                    <div class="item-desc">lap</div>
+                    <p class="item-text">0:00.000</p>
+                </div>
+                <div id="fuel" class="grid-item">
+                    <div class="item-desc">fuel</div>
+                    <p class="item-text">0</p>
+                </div>
+                <div id="prev" class="grid-item">
+                    <div class="item-desc">prev</div>
+                    <p class="item-text">0:00.000</p>
+                </div>
+                <div id="best" class="grid-item">
+                    <div class="item-desc">best</div>
+                    <p class="item-text">0:00.000</p>
+                </div>
+                <div id="abs" class="grid-item">
+                    <div class="item-desc">abs</div>
+                    <p class="item-text">0</p>
+                </div>
+                <div id="tcs" class="grid-item">
+                    <div class="item-desc">tcs</div>
+                    <p class="item-text">0</p>
+                </div>
+                <div id="pos" class="grid-item">
+                    <div class="item-desc">pos</div>
+                    <p class="item-text">1/1</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- USER CODE END -->
+
+</body>
+
+</html>
