@@ -47,17 +47,23 @@ function updateType1(json) {
         document.querySelector("div#speed p").textContent = json.Speed;
         document.querySelector("div#gear p").textContent = gear;
         document.querySelector("div#current p").textContent = SecondsToTimeString(json.Current);
-        // document.queryCommandEnabled("p.current-diff").textContent = SecondsToGapTimeString(json.DeltaBest);
-        // if (json.DeltaBest > 0) {
-        //     document.querySelector("p.current-diff").style.color = "red";
-        // } else if (json.DeltaBest < 0) {
-        //     document.querySelector("p.current-diff").style.color = "green";
-        // } else {
-        //     document.querySelector("p.current-diff").style.color = "white";
-        // }
+        document.queryCommandEnabled("div#diff p").textContent = SecondsToGapTimeString(json.DeltaBest);
+        if (json.DeltaBest > 0) {
+            document.querySelector("div#diff p").style.color = "red";
+        } else if (json.DeltaBest < 0) {
+            document.querySelector("div#diff p").style.color = "green";
+        } else {
+            document.querySelector("div#diff p").style.color = "white";
+        }
+        document.querySelector("div#turbo p").textContent = json.Turbo + " bar";
         document.querySelector("div#rpm p").textContent = json.RPM;
         document.querySelector("div#tcs p").textContent = json.TC * 100 - 7;
         document.querySelector("div#abs p").textContent = json.ABS * 100 - 7;
+        if (json.KERS != 0) {
+            document.querySelector("div#kers p").textContent = (json.KERSCurrent / json.KERSAmount) * 100 + "%";
+        } else {
+            document.querySelector("div#kers p").textContent = 0;
+        }
 
         document.getElementById("digital_bar").style.width = (rpm_per * 100) + "%";
 
