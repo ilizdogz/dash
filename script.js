@@ -60,7 +60,7 @@ function updateType1(json) {
             document.querySelector("#gear").className = "grid-item";
             document.querySelector("#digital_bar").className = "bg-normal";
             if (rpm_per >= 80) {
-                document.querySelectory("#rpm").className = "grid-item yellow";
+                document.querySelectory("#rpm").className = "grid-item bg-yellow";
             } else {
                 document.querySelector("#rpm").className = "grid-item";
             }

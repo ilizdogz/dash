@@ -29,7 +29,7 @@ body {
 }
 
 .bg-normal {
-    background: rgba(0, 58, 219, 0.425);
+    background: rgba(0, 58, 219, 0.5);
 }
 
 .grid-container {
@@ -146,7 +146,7 @@ body {
 }
 
 .gear_shift_active {
-    background: rgba(255, 0, 0, 0.404);
+    background: rgba(255, 0, 0, 0.5);
 }
 
 .visible {
@@ -178,4 +178,8 @@ body {
 .tire-text {
     font-size: 1em !important;
     white-space: pre;
+}
+
+.bg-yellow {
+    background: rgba(248, 149, 0, 0.5);
 }
