@@ -6,7 +6,7 @@ var shiftindicator = 0.985;
 window.addEventListener("load", eventWindowLoaded, false);
 
 function eventWindowLoaded() {
-    // preloadBar();
+    preloadBar();
     preload = true;
 }
 
@@ -28,6 +28,8 @@ function preloadBar() {
 
 // CALLBACK FUNCTIONS START (REQUIRED)
 
+var maxRpm = 0;
+
 // function is called for JSON-Response with JSONType 1, 2 and 3
 function updateType1(json) {
     // USER CODE START
@@ -37,9 +39,25 @@ function updateType1(json) {
 
     if (preload) {
 
-        var rpm_per = json.RPM / MAXRPM;
-        document.querySelector("div#speed p").innerHTML = json.Speed;
-        document.getElementById("div#gear p").innerHTML = gear;
+        if (json.RPM > maxRpm) {
+            maxRpm = json.RPM;
+        }
+        console.log(json);
+        var rpm_per = json.RPM / maxRpm;
+        document.querySelector("div#speed p").textContent = json.Speed;
+        document.querySelector("div#gear p").textContent = gear;
+        document.querySelector("div#current p").textContent = SecondsToTimeString(json.Current);
+        // document.queryCommandEnabled("p.current-diff").textContent = SecondsToGapTimeString(json.DeltaBest);
+        // if (json.DeltaBest > 0) {
+        //     document.querySelector("p.current-diff").style.color = "red";
+        // } else if (json.DeltaBest < 0) {
+        //     document.querySelector("p.current-diff").style.color = "green";
+        // } else {
+        //     document.querySelector("p.current-diff").style.color = "white";
+        // }
+        document.querySelector("div#rpm p").textContent = json.RPM;
+        document.querySelector("div#tcs p").textContent = json.TC * 100 - 7;
+        document.querySelector("div#abs p").textContent = json.ABS * 100 - 7;
 
         document.getElementById("digital_bar").style.width = (rpm_per * 100) + "%";
 
@@ -80,9 +98,9 @@ function updateType1(json) {
         }
 
         if (shiftindicator <= rpm_per) {
-            document.querySelector("#gear").className = "gear_shift_active";
+            document.querySelector("#gear").className = "grid-item gear_shift_active";
         } 
-        else document.getElementById("#gear").className = "";
+        else document.querySelector("#gear").className = "grid-item";
     }
 
     // USER CODE END
@@ -93,9 +111,10 @@ function updateType1(json) {
 // function is called for JSON-Response with JSONType 2 and 3
 function updateType2(json) {
     // USER CODE START
-    document.querySelector("div#lap p").innerHTML = Laps;
-    document.querySelector("div#prev p").innerHTML = SecondsToTimeString(Last);
-    document.querySelector("div#best p").innerHTML = SecondsToTimeString(Best);
+    document.querySelector("div#lap p").textContent = Laps;
+    document.querySelector("div#prev p").textContent = SecondsToTimeString(Last);
+    document.querySelector("div#best p").textContent = SecondsToTimeString(Best);
+    document.querySelector("div#fuel p").textContent = json.Fuel;
     // USER CODE END	
 }
 
@@ -105,6 +124,7 @@ function updateType3(json) {
     //if(!preload) preloadBar();
     //document.getElementById("speed_label").innerHTML = Speedunit == 0 ? 'KPH' : 'MPH';
     shiftindicator = ShiftIndicator / 100;
+    document.querySelector("div#pos p").textContent = json.Pos + "/" + json.Cars;
     // USER CODE END
 }
 

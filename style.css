@@ -117,3 +117,11 @@ body {
 .gear_shift_active {
     background: rgba(255, 0, 0, 0.404);
 }
+
+.visible {
+    display: inline;
+}
+
+.hidden {
+    display: none;
+}
